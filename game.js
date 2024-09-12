@@ -22,7 +22,7 @@ scoreSound.src = "https://raw.githubusercontent.com/Polycode-Fiction/flappy-bird
 
 // Variabler
 let gap = 85;
-let constant = pipeNorth.height + gap;
+let constant;
 let birdX = 10;
 let birdY = 150;
 let gravity = 1.5;
@@ -45,36 +45,52 @@ pipe[0] = {
     y: 0
 };
 
-// Når bird-bildet er lastet inn, kan du begynne å tegne
-bird.onload = function() {
-    // Reduserer bredden og høyden til 50%
+// Når bildene er lastet inn, kan du begynne å tegne
+function startDrawing() {
+    // Reduserer størrelsen på bildene
     bird.width = bird.width / 2;
     bird.height = bird.height / 2;
 
-    draw(); // Start tegne-funksjonen etter at bildet er lastet inn
-};
+    // Reduserer størrelsen på pipe-bildene
+    const pipeWidth = pipeNorth.width / 2;
+    const pipeHeight = pipeNorth.height / 2;
+
+    // Justerer konstanten basert på ny høyde
+    constant = pipeHeight + gap;
+
+    // Oppdaterer pipe-koordinatene med ny størrelse
+    pipe[0] = {
+        x: canvas.width,
+        y: Math.floor(Math.random() * (pipeHeight - (canvas.height - fg.height - constant)))
+    };
+
+    draw();
+}
 
 // Tegn elementer på canvas
 function draw() {
     ctx.drawImage(bg, 0, 0);
 
+    const pipeWidth = pipeNorth.width / 2;
+    const pipeHeight = pipeNorth.height / 2;
+
     for (let i = 0; i < pipe.length; i++) {
-        constant = pipeNorth.height + gap;
-        ctx.drawImage(pipeNorth, pipe[i].x, pipe[i].y);
-        ctx.drawImage(pipeSouth, pipe[i].x, pipe[i].y + constant);
+        constant = pipeHeight + gap;
+        ctx.drawImage(pipeNorth, pipe[i].x, pipe[i].y, pipeWidth, pipeHeight);
+        ctx.drawImage(pipeSouth, pipe[i].x, pipe[i].y + constant, pipeWidth, canvas.height - (pipe[i].y + constant) - fg.height);
 
         pipe[i].x--;
 
         if (pipe[i].x == 125) {
             pipe.push({
                 x: canvas.width,
-                y: Math.floor(Math.random() * pipeNorth.height) - pipeNorth.height
+                y: Math.floor(Math.random() * (pipeHeight - (canvas.height - fg.height - constant)))
             });
         }
 
         // Kollisjon
-        if (birdX + bird.width >= pipe[i].x && birdX <= pipe[i].x + pipeNorth.width &&
-            (birdY <= pipe[i].y + pipeNorth.height || birdY + bird.height >= pipe[i].y + constant) || birdY + bird.height >= canvas.height - fg.height) {
+        if (birdX + bird.width >= pipe[i].x && birdX <= pipe[i].x + pipeWidth &&
+            (birdY <= pipe[i].y + pipeHeight || birdY + bird.height >= pipe[i].y + constant) || birdY + bird.height >= canvas.height - fg.height) {
             location.reload(); // Last inn siden på nytt hvis kollisjon
         }
 
@@ -85,7 +101,7 @@ function draw() {
     }
 
     ctx.drawImage(fg, 0, canvas.height - fg.height);
-    ctx.drawImage(bird, birdX, birdY, bird.width, bird.height); // Tegn med ny størrelse
+    ctx.drawImage(bird, birdX, birdY, bird.width, bird.height);
 
     birdY += gravity;
 
@@ -95,3 +111,15 @@ function draw() {
 
     requestAnimationFrame(draw);
 }
+
+// Når alle bildene er lastet inn, starter tegningen
+bg.onload = () => {
+    fg.onload = () => {
+        pipeNorth.onload = () => {
+            pipeSouth.onload = () => {
+                bird.onload = startDrawing;
+            }
+        }
+    }
+};
+
