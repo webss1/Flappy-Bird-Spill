@@ -1,4 +1,4 @@
-const canvas = document.getElementById('gameCanvas');
+const canvas = document.getElementById('gameCanvas'); 
 const ctx = canvas.getContext('2d');
 
 // Last inn bilder
@@ -12,7 +12,6 @@ bird.src = "bird.png";
 bg.src = "bg.png";
 pipeNorth.src = "pipeNorth.png";
 pipeSouth.src = "pipeSouth.png";
-
 
 // Lydfiler
 const fly = new Audio();
@@ -46,6 +45,15 @@ pipe[0] = {
     y: 0
 };
 
+// Når bird-bildet er lastet inn, kan du begynne å tegne
+bird.onload = function() {
+    // Reduserer bredden og høyden til 50%
+    bird.width = bird.width / 2;
+    bird.height = bird.height / 2;
+
+    draw(); // Start tegne-funksjonen etter at bildet er lastet inn
+};
+
 // Tegn elementer på canvas
 function draw() {
     ctx.drawImage(bg, 0, 0);
@@ -77,7 +85,7 @@ function draw() {
     }
 
     ctx.drawImage(fg, 0, canvas.height - fg.height);
-    ctx.drawImage(bird, birdX, birdY);
+    ctx.drawImage(bird, birdX, birdY, bird.width, bird.height); // Tegn med ny størrelse
 
     birdY += gravity;
 
@@ -87,5 +95,3 @@ function draw() {
 
     requestAnimationFrame(draw);
 }
-
-draw();
