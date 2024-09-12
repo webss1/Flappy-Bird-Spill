@@ -28,6 +28,10 @@ let birdY = 150;
 let gravity = 1.5;
 let score = 0;
 
+// Størrelse på pipene
+const pipeWidth = 50; // Sett ønsket bredde på pipene her
+const pipeHeight = 300; // Sett ønsket høyde på pipene her
+
 // Fly-funksjon
 document.addEventListener("keydown", flyUp);
 document.addEventListener("touchstart", flyUp);
@@ -47,32 +51,14 @@ pipe[0] = {
 
 // Når bildene er lastet inn, kan du begynne å tegne
 function startDrawing() {
-    // Reduserer størrelsen på bildene
-    bird.width = bird.width / 2;
-    bird.height = bird.height / 2;
-
-    // Reduserer størrelsen på pipe-bildene
-    const pipeWidth = pipeNorth.width / 2;
-    const pipeHeight = pipeNorth.height / 2;
-
-    // Justerer konstanten basert på ny høyde
+    // Oppdaterer konstanten basert på ny pipe høyde
     constant = pipeHeight + gap;
-
-    // Oppdaterer pipe-koordinatene med ny størrelse
-    pipe[0] = {
-        x: canvas.width,
-        y: Math.floor(Math.random() * (pipeHeight - (canvas.height - fg.height - constant)))
-    };
-
     draw();
 }
 
 // Tegn elementer på canvas
 function draw() {
     ctx.drawImage(bg, 0, 0);
-
-    const pipeWidth = pipeNorth.width / 2;
-    const pipeHeight = pipeNorth.height / 2;
 
     for (let i = 0; i < pipe.length; i++) {
         constant = pipeHeight + gap;
