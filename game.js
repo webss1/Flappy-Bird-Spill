@@ -8,11 +8,12 @@ const fg = new Image();
 const pipeNorth = new Image();
 const pipeSouth = new Image();
 
-bird.src = "https://raw.githubusercontent.com/Polycode-Fiction/flappy-bird-assets/main/bird.png";
-bg.src = "https://raw.githubusercontent.com/Polycode-Fiction/flappy-bird-assets/main/bg.png";
-fg.src = "https://raw.githubusercontent.com/Polycode-Fiction/flappy-bird-assets/main/fg.png";
-pipeNorth.src = "https://raw.githubusercontent.com/Polycode-Fiction/flappy-bird-assets/main/pipeNorth.png";
-pipeSouth.src = "https://raw.githubusercontent.com/Polycode-Fiction/flappy-bird-assets/main/pipeSouth.png";
+bird.src = "bird.png";
+bg.src = "bg.png";
+fg.src = "fg.png";
+pipeNorth.src = "pipeNorth.png";
+pipeSouth.src = "pipeSouth.png";
+
 
 // Lydfiler
 const fly = new Audio();
