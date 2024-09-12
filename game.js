@@ -58,6 +58,12 @@ function startDrawing() {
 
 // Tegn elementer på canvas
 function draw() {
+    if (!bg.complete || !fg.complete || !pipeNorth.complete || !pipeSouth.complete || !bird.complete) {
+        // Sjekk at alle bilder er lastet
+        console.error("En eller flere bilder er ikke lastet korrekt.");
+        return;
+    }
+
     ctx.drawImage(bg, 0, 0);
 
     for (let i = 0; i < pipe.length; i++) {
@@ -108,4 +114,12 @@ bg.onload = () => {
         }
     }
 };
+
+// Feilhåndtering for bilder som ikke laster
+bg.onerror = () => console.error("Feil ved lasting av bg-bildet");
+fg.onerror = () => console.error("Feil ved lasting av fg-bildet");
+pipeNorth.onerror = () => console.error("Feil ved lasting av pipeNorth-bildet");
+pipeSouth.onerror = () => console.error("Feil ved lasting av pipeSouth-bildet");
+bird.onerror = () => console.error("Feil ved lasting av bird-bildet");
+
 
